@@ -1,20 +1,40 @@
 function somarSalarios(): void {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
-    const valores = sheet.getRange("B2:B").getValues();
+  const ultimaLinha = sheet.getLastRow();
 
-    let soma: number = 0;
+  // Não faz nada se não houver dados
+  if (ultimaLinha < 2) return;
 
-    for (let i = 0; i < valores.length; i++) {
-        const valor = valores[i]?.[0];
+  // Pega apenas os dados existentes (coluna B, a partir da linha 2)
+  const valores = sheet.getRange(2, 2, ultimaLinha - 1, 1).getValues();
 
-        if (typeof valor === "number") {
-            soma += valor;
-        }
+  let soma = 0;
+
+  for (let i = 0; i < valores.length; i++) {
+    const valor = valores[i][0];
+
+    if (typeof valor === "number") {
+      soma += valor;
     }
+  }
 
-    const ultimaLinha = sheet.getLastRow();
+  // Define uma linha fixa para o total
+  const linhaTotal = 10;
 
-    sheet.getRange(ultimaLinha + 1, 1).setValue("Total");
-    sheet.getRange(ultimaLinha + 1, 2).setValue(soma);
+  sheet.getRange(linhaTotal, 1).setValue("Total");
+  sheet.getRange(linhaTotal, 2).setValue(soma);
+}
+
+
+// 🔥 Automação: executa ao editar a planilha
+function onEdit(e: GoogleAppsScript.Events.SheetsOnEdit): void {
+  const range = e.range;
+
+  // Só executa se:
+  // - Coluna B (salários)
+  // - Linhas acima do total
+  if (range.getColumn() === 2 && range.getRow() >= 2 && range.getRow() < 10) {
+    somarSalarios();
+  }
 }

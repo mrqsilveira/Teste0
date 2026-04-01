@@ -3,7 +3,6 @@
  {
   "compilerOptions": {
     "target": "ES2019",
-    //"module": "none",
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
@@ -11,4 +10,4 @@
     "skipLibCheck": true
   }
 } 
- 
+

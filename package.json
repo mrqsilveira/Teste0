@@ -1,10 +1,15 @@
 {
-  "name": "teste0",
+ "name": "teste0",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projeto Google Sheets + Apps Script com TypeScript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "copy": "copy appsscript.json dist\\",
+    "push": "clasp push",
+    "deploy": "npm run build && npm run copy && npm run push",
+    "version": "clasp version",
+    "deploy:version": "npm run deploy && clasp version \"Nova versão\""
   },
   "keywords": [],
   "author": "",
